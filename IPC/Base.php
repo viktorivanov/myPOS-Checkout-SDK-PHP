@@ -126,6 +126,27 @@ abstract class Base
     }
 
     /**
+     * Builds the necessarily POST URL and fields for submission.
+     * 
+     * @return array
+     */
+    protected function _buildPayload()
+    {
+        $this->params['Signature'] = $this->_createSignature();
+
+        $fields = [];
+
+        foreach ($this->params as $k => $v) {
+            $fields[] = ['name' => $k, 'value' => $v];
+        }
+
+        return [
+            'url'    => $this->getCnf()->getIpcURL(), 
+            'fields' => $fields,
+        ];
+    }
+
+    /**
      * Create signature of API Request params against the SID private key
      *
      * @return string base64 encoded signature

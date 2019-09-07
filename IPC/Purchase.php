@@ -129,6 +129,34 @@ class Purchase extends Base
     {
         $this->validate();
 
+        $this->addPostParams();
+
+        $this->_processHtmlPost();
+
+        return true;
+    }
+
+    /**
+     * Build API payload.
+     * 
+     * @return array
+     *
+     * @throws IPC_Exception
+     */
+    public function processPayload()
+    {
+        $this->validate();
+
+        $this->addPostParams();
+
+        return $this->_buildPayload();
+    }
+
+    /**
+     * Add Post parameters.
+     */
+    protected function addPostParams()
+    {
         $this->_addPostParam('IPCmethod', 'IPCPurchase');
         $this->_addPostParam('IPCVersion', $this->getCnf()->getVersion());
         $this->_addPostParam('IPCLanguage', $this->getCnf()->getLang());
@@ -177,10 +205,6 @@ class Purchase extends Base
         $this->_addPostParam('CardTokenRequest', $this->getCardTokenRequest());
         $this->_addPostParam('PaymentParametersRequired', $this->getPaymentParametersRequired());
         $this->_addPostParam('PaymentMethod', $this->getPaymentMethod());
-
-        $this->_processHtmlPost();
-
-        return true;
     }
 
     /**
